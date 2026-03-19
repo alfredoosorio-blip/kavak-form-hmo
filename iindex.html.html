@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kavak Aliados — Registro de Dealers</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #0D1B3E;
+  --navy-mid: #162447;
+  --navy-light: #1e3260;
+  --blue: #2563EB;
+  --blue-light: #3B82F6;
+  --blue-pale: rgba(37,99,235,0.12);
+  --white: #ffffff;
+  --gray-100: #F4F6FB;
+  --gray-200: #E8ECF5;
+  --gray-400: #9AA3B8;
+  --gray-600: #5A6480;
+  --text: #0D1B3E;
+  --success: #10B981;
+  --error: #EF4444;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--gray-100);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+.header {
+  background: var(--navy);
+  position: relative;
+  overflow: hidden;
+  padding: 2.5rem 1.5rem 3.5rem;
+  text-align: center;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(37,99,235,0.2) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.header::after {
+  content: '';
+  position: absolute;
+  top: -80px; left: 50%;
+  transform: translateX(-50%);
+  width: 500px; height: 300px;
+  background: radial-gradient(ellipse, rgba(37,99,235,0.3) 0%, transparent 70%);
+}
+.header-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.logo-img { height: 48px; width: auto; }
+.logo-sub {
+  font-family: 'Sora', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--blue-light);
+  margin-top: 4px;
+}
+.header-divider {
+  width: 1px; height: 32px;
+  background: rgba(255,255,255,0.15);
+}
+.header-title {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(20px, 4vw, 26px);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.25;
+}
+.header-title span { color: var(--blue-light); }
+.header-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  font-weight: 300;
+  line-height: 1.6;
+  max-width: 380px;
+}
+.event-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(37,99,235,0.25);
+  border: 0.5px solid rgba(37,99,235,0.5);
+  color: #93B4FA;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  padding: 5px 14px;
+  border-radius: 20px;
+}
+.event-tag::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--blue-light);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ── Forma decorativa inferior del header ── */
+.header-wave {
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 32px;
+  background: var(--gray-100);
+  clip-path: ellipse(55% 100% at 50% 100%);
+}
+
+/* ── Progreso ── */
+.progress-wrap {
+  background: var(--white);
+  border-bottom: 0.5px solid var(--gray-200);
+  padding: 12px 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.progress-inner {
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.progress-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.progress-dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--gray-200);
+  background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Sora', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray-400);
+  transition: all 0.3s;
+}
+.progress-step.active .progress-dot {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: var(--white);
+}
+.progress-step.done .progress-dot {
+  border-color: var(--success);
+  background: var(--success);
+  color: var(--white);
+}
+.progress-dot.done-icon::after { content: '✓'; }
+.progress-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  white-space: nowrap;
+}
+.progress-step.active .progress-label { color: var(--blue); }
+.progress-step.done .progress-label { color: var(--success); }
+.progress-line {
+  flex: 0.5;
+  height: 2px;
+  background: var(--gray-200);
+  border-radius: 2px;
+  margin-bottom: 14px;
+  transition: background 0.3s;
+}
+.progress-line.done { background: var(--success); }
+
+/* ── Contenedor del form ── */
+.form-wrap {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+/* ── Secciones ── */
+.section {
+  display: none;
+  animation: sectionIn 0.4s ease;
+}
+.section.active { display: block; }
+@keyframes sectionIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.75rem;
+}
+.section-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.section-icon svg { width: 18px; height: 18px; }
+.section-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.section-desc {
+  font-size: 13px;
+  color: var(--gray-600);
+  margin-top: 1px;
+}
+
+/* ── Campos ── */
+.field { margin-bottom: 1.25rem; }
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 7px;
+}
+label .req { color: var(--blue); margin-left: 2px; }
+input[type=text],
+input[type=email],
+input[type=tel],
+select,
+textarea {
+  width: 100%;
+  background: var(--white);
+  border: 1.5px solid var(--gray-200);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+input.error, select.error, textarea.error {
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.1);
+}
+.field-error {
+  font-size: 11px;
+  color: var(--error);
+  margin-top: 5px;
+  display: none;
+}
+textarea { resize: vertical; min-height: 80px; }
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A6480' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+/* ── Checkboxes personalizados ── */
+.checks-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--white);
+  border: 1.5px solid var(--gray-200);
+  border-radius: 10px;
+  padding: 11px 13px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  user-select: none;
+}
+.check-item:hover { border-color: var(--blue-light); }
+.check-item.checked {
+  border-color: var(--blue);
+  background: rgba(37,99,235,0.05);
+}
+.check-box {
+  width: 18px; height: 18px;
+  border-radius: 5px;
+  border: 2px solid var(--gray-200);
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.check-item.checked .check-box {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+.check-box svg { display: none; }
+.check-item.checked .check-box svg { display: block; }
+.check-text {
+  font-size: 12.5px;
+  color: var(--gray-600);
+  line-height: 1.4;
+}
+.check-item.checked .check-text { color: var(--navy); font-weight: 500; }
+
+/* ── Radio personalizados ── */
+.radio-group { display: flex; flex-direction: column; gap: 8px; }
+.radio-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--white);
+  border: 1.5px solid var(--gray-200);
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  user-select: none;
+}
+.radio-item:hover { border-color: var(--blue-light); }
+.radio-item.selected {
+  border-color: var(--blue);
+  background: rgba(37,99,235,0.05);
+}
+.radio-circle {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--gray-200);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.radio-item.selected .radio-circle { border-color: var(--blue); }
+.radio-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--blue);
+  display: none;
+}
+.radio-item.selected .radio-dot { display: block; }
+.radio-text { font-size: 13.5px; color: var(--gray-600); }
+.radio-item.selected .radio-text { color: var(--navy); font-weight: 500; }
+
+/* ── Botones de navegación ── */
+.btn-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 2rem;
+}
+.btn-back {
+  flex: 0 0 auto;
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: 1.5px solid var(--gray-200);
+  background: var(--white);
+  color: var(--gray-600);
+  font-family: 'Sora', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.btn-back:hover { border-color: var(--navy); color: var(--navy); }
+.btn-next {
+  flex: 1;
+  padding: 15px 24px;
+  border-radius: 12px;
+  border: none;
+  background: var(--blue);
+  color: var(--white);
+  font-family: 'Sora', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  position: relative; overflow: hidden;
+}
+.btn-next::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+}
+.btn-next:hover { background: #1D4ED8; transform: translateY(-1px); }
+.btn-next:active { transform: scale(0.99); }
+.btn-next:disabled { background: var(--gray-400); cursor: not-allowed; transform: none; }
+.btn-arrow { transition: transform 0.2s; }
+.btn-next:hover .btn-arrow { transform: translateX(4px); }
+
+/* ── Pantalla de éxito ── */
+#success-screen {
+  display: none;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  animation: sectionIn 0.5s ease;
+}
+.success-circle {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: rgba(16,185,129,0.1);
+  border: 2px solid var(--success);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+.success-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.75rem;
+}
+.success-sub {
+  font-size: 14px;
+  color: var(--gray-600);
+  line-height: 1.7;
+  max-width: 340px;
+  margin: 0 auto 2rem;
+}
+.success-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--navy);
+  color: var(--white);
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 40px;
+}
+
+/* ── Spinner ── */
+.spinner {
+  width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: none;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 480px) {
+  .field-row { grid-template-columns: 1fr; }
+  .checks-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-inner">
+    <div>
+      <img class="logo-img" src="data:image/png;base64,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" alt="Kavak Aliados" />
+      <div class="logo-sub">Aliados</div>
+    </div>
+    <div class="header-divider"></div>
+    <div>
+      <div class="event-tag">Hermosillo 2026</div>
+      <h1 class="header-title" style="margin-top:10px">Registro de <span>Dealer</span></h1>
+      <p class="header-sub">Completa tu información para que podamos darte seguimiento personalizado.</p>
+    </div>
+  </div>
+  <div class="header-wave"></div>
+</div>
+
+<!-- Barra de progreso -->
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <div class="progress-step active" id="ps-1" onclick="goToStep(1)">
+      <div class="progress-dot" id="pd-1">1</div>
+      <div class="progress-label">Contacto</div>
+    </div>
+    <div class="progress-line" id="pl-1"></div>
+    <div class="progress-step" id="ps-2" onclick="goToStep(2)">
+      <div class="progress-dot" id="pd-2">2</div>
+      <div class="progress-label">Negocio</div>
+    </div>
+    <div class="progress-line" id="pl-2"></div>
+    <div class="progress-step" id="ps-3" onclick="goToStep(3)">
+      <div class="progress-dot" id="pd-3">3</div>
+      <div class="progress-label">Operación</div>
+    </div>
+    <div class="progress-line" id="pl-3"></div>
+    <div class="progress-step" id="ps-4" onclick="goToStep(4)">
+      <div class="progress-dot" id="pd-4">4</div>
+      <div class="progress-label">Seguimiento</div>
+    </div>
+  </div>
+</div>
+
+<!-- Formulario -->
+<div class="form-wrap">
+
+  <!-- PASO 1: Datos de contacto -->
+  <div class="section active" id="step-1">
+    <div class="section-header">
+      <div class="section-icon">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="9" cy="6" r="3" stroke="white" stroke-width="1.5"/>
+          <path d="M3 16c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="section-title">Tus datos de contacto</div>
+        <div class="section-desc">Información del representante en el evento</div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Nombre <span class="req">*</span></label>
+        <input type="text" id="nombre" placeholder="Juan García" />
+        <div class="field-error" id="err-nombre">Este campo es requerido</div>
+      </div>
+      <div class="field">
+        <label>Cargo</label>
+        <input type="text" id="cargo" placeholder="Director / Dueño" />
+      </div>
+    </div>
+    <div class="field">
+      <label>Correo electrónico <span class="req">*</span></label>
+      <input type="email" id="email" placeholder="juan@miauto.com" />
+      <div class="field-error" id="err-email">Ingresa un correo válido</div>
+    </div>
+    <div class="field">
+      <label>WhatsApp / Teléfono <span class="req">*</span></label>
+      <input type="tel" id="telefono" placeholder="6621234567" maxlength="15" />
+      <div class="field-error" id="err-telefono">Mínimo 10 dígitos</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-next" onclick="nextStep(1)">
+        Continuar
+        <svg class="btn-arrow" viewBox="0 0 20 20" fill="none" width="16" height="16">
+          <path d="M4 10h12M11 5l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- PASO 2: Datos del negocio -->
+  <div class="section" id="step-2">
+    <div class="section-header">
+      <div class="section-icon">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="7" width="14" height="9" rx="1.5" stroke="white" stroke-width="1.5"/>
+          <path d="M6 7V5a3 3 0 016 0v2" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="section-title">Datos de tu negocio</div>
+        <div class="section-desc">Cuéntanos sobre tu agencia o lote</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Nombre de la empresa <span class="req">*</span></label>
+      <input type="text" id="empresa" placeholder="Autos García S.A. de C.V." />
+      <div class="field-error" id="err-empresa">Este campo es requerido</div>
+    </div>
+    <div class="field">
+      <label>Dirección del negocio <span class="req">*</span></label>
+      <input type="text" id="direccion" placeholder="Calle, colonia, ciudad, estado" />
+      <div class="field-error" id="err-direccion">Este campo es requerido</div>
+    </div>
+    <div class="field">
+      <label>Página web o redes sociales</label>
+      <input type="text" id="web" placeholder="www.miauto.com  ó  @miauto_hmo" />
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevStep(2)">
+        <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
+          <path d="M10 12L5 8l5-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Atrás
+      </button>
+      <button class="btn-next" onclick="nextStep(2)">
+        Continuar
+        <svg class="btn-arrow" viewBox="0 0 20 20" fill="none" width="16" height="16">
+          <path d="M4 10h12M11 5l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- PASO 3: Volumen de operación -->
+  <div class="section" id="step-3">
+    <div class="section-header">
+      <div class="section-icon">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 13l4-4 3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="2" y="2" width="14" height="14" rx="2" stroke="white" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="section-title">Volumen de operación</div>
+        <div class="section-desc">Nos ayuda a personalizar tu propuesta</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>¿Cuántos autos vendes al mes? <span class="req">*</span></label>
+      <select id="venta-mes">
+        <option value="" disabled selected>Selecciona un rango</option>
+        <option>Menos de 10</option>
+        <option>10 – 30</option>
+        <option>31 – 60</option>
+        <option>61 – 100</option>
+        <option>Más de 100</option>
+      </select>
+      <div class="field-error" id="err-venta-mes">Selecciona una opción</div>
+    </div>
+
+    <div class="field">
+      <label>¿Cuántos autos compras al mes?</label>
+      <select id="compra-mes">
+        <option value="" disabled selected>Selecciona un rango</option>
+        <option>Menos de 10</option>
+        <option>10 – 30</option>
+        <option>31 – 60</option>
+        <option>61 – 100</option>
+        <option>Más de 100</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>¿Qué productos de Kavak Aliados te interesan?</label>
+      <div class="checks-grid" id="productos-checks">
+        <div class="check-item" onclick="toggleCheck(this, 'TAS — Liquidez inmediata')">
+          <div class="check-box">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="check-text"><strong>TAS</strong><br>Liquidez inmediata</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'Subastas — Inventario')">
+          <div class="check-box">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="check-text"><strong>Subastas</strong><br>Acceso a inventario</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'Plan Piso — Financiamiento')">
+          <div class="check-box">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="check-text"><strong>Plan Piso</strong><br>Financiamiento de inv.</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'EaaS — E-Commerce')">
+          <div class="check-box">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="check-text"><strong>EaaS</strong><br>E-Commerce dealer</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this, 'KUNA Capital — Tu cliente compra')">
+          <div class="check-box">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="check-text"><strong>KUNA Capital</strong><br>Tu cliente compra</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevStep(3)">
+        <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
+          <path d="M10 12L5 8l5-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Atrás
+      </button>
+      <button class="btn-next" onclick="nextStep(3)">
+        Continuar
+        <svg class="btn-arrow" viewBox="0 0 20 20" fill="none" width="16" height="16">
+          <path d="M4 10h12M11 5l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- PASO 4: Seguimiento -->
+  <div class="section" id="step-4">
+    <div class="section-header">
+      <div class="section-icon">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 4h12v8a2 2 0 01-2 2H5a2 2 0 01-2-2V4z" stroke="white" stroke-width="1.5"/>
+          <path d="M3 4l6 5 6-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="section-title">Preferencia de contacto</div>
+        <div class="section-desc">¿Cómo prefieres que te demos seguimiento?</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Medio de contacto preferido <span class="req">*</span></label>
+      <div class="radio-group" id="contacto-radio">
+        <div class="radio-item" onclick="selectRadio(this, 'contacto-radio', 'WhatsApp')">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <div class="radio-text">WhatsApp</div>
+        </div>
+        <div class="radio-item" onclick="selectRadio(this, 'contacto-radio', 'Llamada telefónica')">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <div class="radio-text">Llamada telefónica</div>
+        </div>
+        <div class="radio-item" onclick="selectRadio(this, 'contacto-radio', 'Correo electrónico')">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <div class="radio-text">Correo electrónico</div>
+        </div>
+        <div class="radio-item" onclick="selectRadio(this, 'contacto-radio', 'Visita al negocio')">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <div class="radio-text">Visita al negocio</div>
+        </div>
+      </div>
+      <div class="field-error" id="err-contacto">Selecciona una opción</div>
+    </div>
+
+    <div class="field">
+      <label>¿Algo más que quieras decirnos?</label>
+      <textarea id="comentarios" placeholder="Preguntas, comentarios o información adicional..."></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevStep(4)">
+        <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
+          <path d="M10 12L5 8l5-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Atrás
+      </button>
+      <button class="btn-next" id="btn-submit" onclick="submitForm()">
+        <span id="btn-text">Enviar registro</span>
+        <div class="spinner" id="spinner"></div>
+        <svg id="btn-icon" class="btn-arrow" viewBox="0 0 20 20" fill="none" width="16" height="16">
+          <path d="M4 10h12M11 5l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Pantalla de éxito -->
+  <div id="success-screen">
+    <div class="success-circle">
+      <svg viewBox="0 0 28 28" fill="none" width="28" height="28">
+        <path d="M6 14l5 5 11-10" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h2 class="success-title">¡Registro exitoso!</h2>
+    <p class="success-sub" id="success-name-msg">Gracias por tu interés en Kavak Aliados. Un asesor se pondrá en contacto contigo muy pronto.</p>
+    <div class="success-badge">
+      <img src="data:image/png;base64,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" alt="Kavak Aliados" style="height:22px; width:auto;" />
+      kavak.com · Aliados
+    </div>
+  </div>
+
+</div><!-- /form-wrap -->
+
+<script>
+  // ── Estado global ──
+  var formData = {};
+  var selectedChecks = [];
+  var selectedRadios = {};
+  var currentStep = 1;
+
+  // ── Navegación ──
+  function goToStep(n) {
+    if (n > currentStep) return; // no saltar adelante sin validar
+    showStep(n);
+  }
+
+  function showStep(n) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('step-' + n).classList.add('active');
+
+    // Actualizar barra de progreso
+    for (var i = 1; i <= 4; i++) {
+      var ps = document.getElementById('ps-' + i);
+      var pd = document.getElementById('pd-' + i);
+      ps.classList.remove('active', 'done');
+      if (i < n) {
+        ps.classList.add('done');
+        pd.innerHTML = '✓';
+      } else if (i === n) {
+        ps.classList.add('active');
+        pd.innerHTML = i;
+      } else {
+        pd.innerHTML = i;
+      }
+    }
+    for (var j = 1; j <= 3; j++) {
+      var pl = document.getElementById('pl-' + j);
+      pl.classList.toggle('done', j < n);
+    }
+    currentStep = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function nextStep(from) {
+    if (!validateStep(from)) return;
+    collectStep(from);
+    showStep(from + 1);
+  }
+
+  function prevStep(from) { showStep(from - 1); }
+
+  // ── Validación por paso ──
+  function validateStep(step) {
+    var ok = true;
+    function showErr(id, fieldId) {
+      var el = document.getElementById(fieldId);
+      var err = document.getElementById(id);
+      el.classList.add('error');
+      err.style.display = 'block';
+      ok = false;
+    }
+    function clearErr(id, fieldId) {
+      var el = document.getElementById(fieldId);
+      var err = document.getElementById(id);
+      el.classList.remove('error');
+      err.style.display = 'none';
+    }
+
+    if (step === 1) {
+      var nombre = document.getElementById('nombre').value.trim();
+      var email = document.getElementById('email').value.trim();
+      var tel = document.getElementById('telefono').value.trim().replace(/\D/g,'');
+      if (!nombre) showErr('err-nombre','nombre'); else clearErr('err-nombre','nombre');
+      if (!email || !email.includes('@')) showErr('err-email','email'); else clearErr('err-email','email');
+      if (tel.length < 10) showErr('err-telefono','telefono'); else clearErr('err-telefono','telefono');
+    }
+    if (step === 2) {
+      var emp = document.getElementById('empresa').value.trim();
+      var dir = document.getElementById('direccion').value.trim();
+      if (!emp) showErr('err-empresa','empresa'); else clearErr('err-empresa','empresa');
+      if (!dir) showErr('err-direccion','direccion'); else clearErr('err-direccion','direccion');
+    }
+    if (step === 3) {
+      var vm = document.getElementById('venta-mes').value;
+      if (!vm) showErr('err-venta-mes','venta-mes'); else clearErr('err-venta-mes','venta-mes');
+    }
+    if (step === 4) {
+      var cont = selectedRadios['contacto-radio'];
+      var errEl = document.getElementById('err-contacto');
+      if (!cont) { errEl.style.display = 'block'; ok = false; }
+      else { errEl.style.display = 'none'; }
+    }
+    return ok;
+  }
+
+  // ── Recolectar datos ──
+  function collectStep(step) {
+    if (step === 1) {
+      formData.nombre = document.getElementById('nombre').value.trim();
+      formData.cargo = document.getElementById('cargo').value.trim();
+      formData.email = document.getElementById('email').value.trim();
+      formData.telefono = document.getElementById('telefono').value.trim();
+    }
+    if (step === 2) {
+      formData.empresa = document.getElementById('empresa').value.trim();
+      formData.direccion = document.getElementById('direccion').value.trim();
+      formData.web = document.getElementById('web').value.trim();
+    }
+    if (step === 3) {
+      formData.ventaMes = document.getElementById('venta-mes').value;
+      formData.compraMes = document.getElementById('compra-mes').value;
+      formData.productos = selectedChecks.join(', ');
+    }
+    if (step === 4) {
+      formData.contacto = selectedRadios['contacto-radio'] || '';
+      formData.comentarios = document.getElementById('comentarios').value.trim();
+    }
+  }
+
+  // ── Checkboxes ──
+  function toggleCheck(el, value) {
+    el.classList.toggle('checked');
+    var idx = selectedChecks.indexOf(value);
+    if (idx === -1) selectedChecks.push(value);
+    else selectedChecks.splice(idx, 1);
+  }
+
+  // ── Radios ──
+  function selectRadio(el, groupId, value) {
+    document.querySelectorAll('#' + groupId + ' .radio-item').forEach(function(r) { r.classList.remove('selected'); });
+    el.classList.add('selected');
+    selectedRadios[groupId] = value;
+  }
+
+  // ── Submit ──
+  function submitForm() {
+    if (!validateStep(4)) return;
+    collectStep(4);
+
+    var btn = document.getElementById('btn-submit');
+    var txt = document.getElementById('btn-text');
+    var spin = document.getElementById('spinner');
+    var icon = document.getElementById('btn-icon');
+
+    btn.disabled = true;
+    txt.textContent = 'Enviando...';
+    spin.style.display = 'block';
+    icon.style.display = 'none';
+
+    // ── AQUÍ va tu endpoint de Google Sheets / Apps Script ──
+    // Reemplaza SCRIPT_URL con la URL de tu Web App de Apps Script
+    var SCRIPT_URL = 'https://script.google.com/a/macros/kavak.com/s/AKfycby2NJUpIcmCJJW_mbs3lb5zySnSWC4jzZ_5lHYUYhxAORbvJ8c5QpgbD7CWheHZMmbB/exec';
+
+    var payload = JSON.stringify(formData);
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: payload
+    })
+    .then(function() { showSuccess(); })
+    .catch(function() {
+      // Si no hay SCRIPT_URL aún, igual mostramos éxito localmente
+      showSuccess();
+    });
+  }
+
+  function showSuccess() {
+    document.querySelector('.progress-wrap').style.display = 'none';
+    document.querySelectorAll('.section').forEach(function(s) { s.style.display = 'none'; });
+    var sc = document.getElementById('success-screen');
+    sc.style.display = 'block';
+    var msg = document.getElementById('success-name-msg');
+    if (formData.nombre) {
+      msg.textContent = formData.nombre + ', gracias por tu interés en Kavak Aliados. Un asesor se pondrá en contacto contigo muy pronto.';
+    }
+  }
+</script>
+
+</body>
+</html>
