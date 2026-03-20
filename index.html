@@ -668,12 +668,7 @@ select {
     <div class="field">
       <label>¿Qué productos de Kavak Aliados te interesan?</label>
       <div class="checks-grid" id="productos-checks">
-        <div class="check-item" onclick="toggleCheck(this, 'TAS — Liquidez inmediata')">
-          <div class="check-box">
-            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div class="check-text"><strong>TAS</strong><br>Liquidez inmediata</div>
-        </div>
+
         <div class="check-item" onclick="toggleCheck(this, 'Subastas — Inventario')">
           <div class="check-box">
             <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -686,12 +681,7 @@ select {
           </div>
           <div class="check-text"><strong>Plan Piso</strong><br>Financiamiento de inv.</div>
         </div>
-        <div class="check-item" onclick="toggleCheck(this, 'EaaS — E-Commerce')">
-          <div class="check-box">
-            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div class="check-text"><strong>EaaS</strong><br>E-Commerce dealer</div>
-        </div>
+
         <div class="check-item" onclick="toggleCheck(this, 'KUNA Capital — Tu cliente compra')">
           <div class="check-box">
             <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -727,33 +717,12 @@ select {
         </svg>
       </div>
       <div>
-        <div class="section-title">Preferencia de contacto</div>
-        <div class="section-desc">¿Cómo prefieres que te demos seguimiento?</div>
+        <div class="section-title">Casi listo</div>
+        <div class="section-desc">¿Algo más que quieras compartir con nosotros?</div>
       </div>
     </div>
 
-    <div class="field">
-      <label>Medio de contacto preferido <span class="req">*</span></label>
-      <div class="radio-group" id="contacto-radio">
-        <div class="radio-item" onclick="selectRadio(this, 'contacto-radio', 'WhatsApp')">
-          <div class="radio-circle"><div class="radio-dot"></div></div>
-          <div class="radio-text">WhatsApp</div>
-        </div>
-        <div class="radio-item" onclick="selectRadio(this, 'contacto-radio', 'Llamada telefónica')">
-          <div class="radio-circle"><div class="radio-dot"></div></div>
-          <div class="radio-text">Llamada telefónica</div>
-        </div>
-        <div class="radio-item" onclick="selectRadio(this, 'contacto-radio', 'Correo electrónico')">
-          <div class="radio-circle"><div class="radio-dot"></div></div>
-          <div class="radio-text">Correo electrónico</div>
-        </div>
-        <div class="radio-item" onclick="selectRadio(this, 'contacto-radio', 'Visita al negocio')">
-          <div class="radio-circle"><div class="radio-dot"></div></div>
-          <div class="radio-text">Visita al negocio</div>
-        </div>
-      </div>
-      <div class="field-error" id="err-contacto">Selecciona una opción</div>
-    </div>
+
 
     <div class="field">
       <label>¿Algo más que quieras decirnos?</label>
@@ -877,12 +846,7 @@ select {
       var vm = document.getElementById('venta-mes').value;
       if (!vm) showErr('err-venta-mes','venta-mes'); else clearErr('err-venta-mes','venta-mes');
     }
-    if (step === 4) {
-      var cont = selectedRadios['contacto-radio'];
-      var errEl = document.getElementById('err-contacto');
-      if (!cont) { errEl.style.display = 'block'; ok = false; }
-      else { errEl.style.display = 'none'; }
-    }
+
     return ok;
   }
 
@@ -905,7 +869,7 @@ select {
       formData.productos = selectedChecks.join(', ');
     }
     if (step === 4) {
-      formData.contacto = selectedRadios['contacto-radio'] || '';
+
       formData.comentarios = document.getElementById('comentarios').value.trim();
     }
   }
