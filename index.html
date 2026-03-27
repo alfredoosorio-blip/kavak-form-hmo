@@ -906,21 +906,21 @@ select {
 
     // ── AQUÍ va tu endpoint de Google Sheets / Apps Script ──
     // Reemplaza SCRIPT_URL con la URL de tu Web App de Apps Script
-    var SCRIPT_URL = 'https://script.google.com/a/macros/kavak.com/s/AKfycby2NJUpIcmCJJW_mbs3lb5zySnSWC4jzZ_5lHYUYhxAORbvJ8c5QpgbD7CWheHZMmbB/exec';
+    var SCRIPT_URL = 'https://formspree.io/f/xnjonzrp';
 
     var payload = JSON.stringify(formData);
 
+    // Formspree requiere FormData
+    var fd = new FormData();
+    Object.keys(formData).forEach(function(k) { fd.append(k, formData[k]); });
+
     fetch(SCRIPT_URL, {
       method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: payload
+      body: fd,
+      headers: { 'Accept': 'application/json' }
     })
-    .then(function() { showSuccess(); })
-    .catch(function() {
-      // Si no hay SCRIPT_URL aún, igual mostramos éxito localmente
-      showSuccess();
-    });
+    .then(function(res) { showSuccess(); })
+    .catch(function() { showSuccess(); });
   }
 
   function showSuccess() {
